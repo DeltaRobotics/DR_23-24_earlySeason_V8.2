@@ -117,9 +117,9 @@ public class robotHardware extends LinearOpMode
         motorLB.setPower(0);
 
         //odometry init (use the motors objects that the odometers are plugged into)
-        leftEncoder = motorLF;
-        rightEncoder = motorRB;
-        perpendicularEncoder = motorLB;
+        leftEncoder = motorRB;
+        rightEncoder = motorLF;
+        perpendicularEncoder = motorRF;
 
         odometers[0] = leftEncoder;
         odometers[1] = rightEncoder;
