@@ -21,12 +21,18 @@ public class driveWithOdo extends LinearOpMode{
 
         while (opModeIsActive()) {
 
-            robot.mecanumDrive(-gamepad1.right_stick_y, gamepad1.right_stick_x, gamepad1.left_stick_x, 1);
+            //robot.mecanumDrive(-gamepad1.right_stick_y, gamepad1.right_stick_x, gamepad1.left_stick_x, 1);
 
-            telemetry.addData("motorRFPower", robot.motorRF.getPower());
-            telemetry.addData("motorRBPower", robot.motorRB.getPower());
-            telemetry.addData("motorLBPower", robot.motorLB.getPower());
-            telemetry.addData("motorLFPower", robot.motorLF.getPower());
+            //telemetry.addData("motorRFPower", robot.motorRF.getPower());
+            //telemetry.addData("motorRBPower", robot.motorRB.getPower());
+            //telemetry.addData("motorLBPower", robot.motorLB.getPower());
+            //telemetry.addData("motorLFPower", robot.motorLF.getPower());
+
+            robot.refresh(robot.odometers);
+
+            telemetry.addData("left encoder", robot.leftEncoder);
+            telemetry.addData("right encoder", robot.rightEncoder);
+            telemetry.addData("perpendicular encoder", robot.perpendicularEncoder);
 
             telemetry.update();
         }

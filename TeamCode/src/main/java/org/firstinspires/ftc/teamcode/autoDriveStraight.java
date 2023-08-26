@@ -26,12 +26,17 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import java.util.ArrayList;
 
 @Autonomous(name="autoDriveStraight")
-
+//@Disabled
 public class autoDriveStraight extends LinearOpMode
 {
 
     @Override
     public void runOpMode() throws InterruptedException {
+
+        robotHardware robot = new robotHardware(hardwareMap);
+
+        //Todo test this
+        robot.goToPos(20,20,90,90);
 
     }
 }
