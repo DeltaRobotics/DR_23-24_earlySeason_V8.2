@@ -248,14 +248,14 @@ public class robotHardware extends LinearOpMode
      */
 
     //odometry constants (tune these)
-    double L = 11.875;   //distance between left and right odometers (in inches)
-    double B = 1.125;   //distance from center of left/right encoders to the perpendicular encoder (in inches)
+    double L = 9.75;   //distance between left and right odometers (in inches)
+    double B = 4.5;   //distance from center of left/right encoders to the perpendicular encoder (in inches)
     double R = .7514;   //wheel radius (in inches)
     double N = 8192;  //encoder ticks per revoluton
     double inPerTick = 2.0 * Math.PI * R / N;
 
     //changes starting location (in inches)
-    public double GlobalX = 3;
+    public double GlobalX = 0;
     public double GlobalY = 0;
     public double GlobalHeading = 0;
 
@@ -304,7 +304,7 @@ public class robotHardware extends LinearOpMode
         //add the robots movement this loop to the global location
         //double theta = (dtheta / 2.0);
         GlobalHeading += dtheta;
-        GlobalX += dx * Math.cos(GlobalHeading) - dy * Math.sin(GlobalHeading);
+        GlobalX -= dx * Math.cos(GlobalHeading) - dy * Math.sin(GlobalHeading);
         GlobalY -= dx * Math.sin(GlobalHeading) + dy * Math.cos(GlobalHeading);
 
 
