@@ -245,11 +245,26 @@ public class robotHardware extends LinearOpMode
      * ect.
      * ---------------------------------------------------------------
      * this use of odometry.wait(...); allows the odometry to continue to update. compared to a sleep(...); which pauses all the code for the duration of the sleep.
+     *
+     *
+     *
+     * This is the code we used to tune the wheels
+     *
+     * robot.mecanumDrive(-gamepad1.right_stick_y, gamepad1.right_stick_x, gamepad1.left_stick_x, 1);
+     *
+     * robot.refresh(robot.odometers);
+     *
+     * telemetry.addData("x", robot.GlobalX);
+     * telemetry.addData("y", robot.GlobalY);
+     * telemetry.addData("heading", robot.GlobalHeading);
+     * telemetry.addData("rotations", -robot.GlobalHeading * 57.295 / 360);
+     *
+     * telemetry.update();
      */
 
     //odometry constants (tune these)
-    double L = 9.75;   //distance between left and right odometers (in inches)
-    double B = 4.5;   //distance from center of left/right encoders to the perpendicular encoder (in inches)
+    double L = 10.1;   //distance between left and right odometers (in inches)
+    double B = 4.75;   //distance from center of left/right encoders to the perpendicular encoder (in inches)
     double R = .7514;   //wheel radius (in inches)
     double N = 8192;  //encoder ticks per revoluton
     double inPerTick = 2.0 * Math.PI * R / N;

@@ -35,8 +35,12 @@ public class autoDriveStraight extends LinearOpMode
 
         robotHardware robot = new robotHardware(hardwareMap);
 
-        //Todo test this
-        robot.goToPos(20,20,90,90);
+        robot.resetDriveEncoders();
+
+        waitForStart();
+
+        robot.goToPos(20, 20, 90, 90);
+        robot.wait(2000, robot.odometers);
 
     }
 }
