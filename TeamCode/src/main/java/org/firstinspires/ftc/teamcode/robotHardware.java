@@ -318,9 +318,9 @@ public class robotHardware extends LinearOpMode
 
         //add the robots movement this loop to the global location
         //double theta = (dtheta / 2.0);
-        GlobalHeading += dtheta;
+        GlobalHeading -= dtheta;
         GlobalX -= dx * Math.cos(GlobalHeading) - dy * Math.sin(GlobalHeading);
-        GlobalY -= dx * Math.sin(GlobalHeading) + dy * Math.cos(GlobalHeading);
+        GlobalY += dx * Math.sin(GlobalHeading) + dy * Math.cos(GlobalHeading);
 
 
         //makes heading 180 to -180

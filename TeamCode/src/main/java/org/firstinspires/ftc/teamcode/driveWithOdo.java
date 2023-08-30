@@ -38,7 +38,10 @@ public class driveWithOdo extends LinearOpMode{
             telemetry.addData("y", robot.GlobalY);
             telemetry.addData("heading", robot.GlobalHeading);
 
-            telemetry.addData("rotations", -robot.GlobalHeading * 57.295 / 360);
+            telemetry.addData("perp", robot.odometers[2].getCurrentPosition());
+
+            telemetry.addData("rotations", robot.GlobalHeading * 57.295 / 360);
+            telemetry.addData("deg", robot.GlobalHeading * 57.295);
 
             telemetry.update();
         }

@@ -37,9 +37,17 @@ public class autoDriveStraight extends LinearOpMode
 
         robot.resetDriveEncoders();
 
+        robot.changeAccuracy(2,2);
+
+        robot.changeSpeed(0.25,0.25);
+
         waitForStart();
 
-        robot.goToPos(20, 20, 90, 90);
+        robot.goToPos(20, 00, 90, 0);
+
+        telemetry.addData("deg",robot.GlobalHeading * 57.295);
+        telemetry.update();
+
         robot.wait(2000, robot.odometers);
 
     }
