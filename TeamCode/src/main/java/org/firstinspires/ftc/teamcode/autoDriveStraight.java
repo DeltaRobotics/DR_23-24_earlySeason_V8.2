@@ -15,6 +15,7 @@ import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.opencv.core.Scalar;
@@ -32,6 +33,9 @@ public class autoDriveStraight extends LinearOpMode
 
     @Override
     public void runOpMode() throws InterruptedException {
+        FtcDashboard dashboard = FtcDashboard.getInstance();
+        telemetry = dashboard.getTelemetry();
+
 
         robotHardware robot = new robotHardware(hardwareMap);
 
@@ -39,16 +43,34 @@ public class autoDriveStraight extends LinearOpMode
 
         robot.changeAccuracy(2,2);
 
-        robot.changeSpeed(0.25,0.25);
+        robot.changeSpeed(0.5,0.5);
+
+        telemetry.addData("hello",1.5);
+        telemetry.addData("heading", robot.GlobalHeading);
+        telemetry.addData("90", 90);
+        telemetry.update();
 
         waitForStart();
 
-        robot.goToPos(20, 00, 90, 0);
+        robot.wait(2000, robot.odometers);
 
-        telemetry.addData("deg",robot.GlobalHeading * 57.295);
+        telemetry.addData("hello world",1);
         telemetry.update();
 
-        robot.wait(2000, robot.odometers);
+        while(true) {
+            telemetry.addData("hello world",2);
+            robot.goToPosSingle(0, 00, Math.toRadians(90), 0);
+            telemetry.addData("hello world",3);
+
+            telemetry.addData("heading", Math.toDegrees(robot.GlobalHeading));
+            telemetry.addData("90", 90);
+            telemetry.update();
+        }
+
+        //telemetry.addData("deg",robot.GlobalHeading * 57.295);
+        //telemetry.update();
+
+        //robot.wait(2000, robot.odometers);
 
     }
 }
