@@ -58,7 +58,7 @@ public class robotHardware extends LinearOpMode
     //PID Turning Variables
 
     public static double TurnF = .19; // = 32767 / maxV      (do not edit from this number)
-    public static double TurnP = 0.03; // = 0.1 * F           (raise till real's apex touches Var apex)
+    public static double TurnP = 0.5; // = 0.1 * F           (raise till real's apex touches Var apex)
     public static double TurnI = 0; // = 0.1 * P           (fine ajustment of P)
     public static double TurnD = 0; // = 0                     (raise to reduce ocolation)
 
