@@ -43,7 +43,7 @@ public class robotHardware extends LinearOpMode
     public static double DriveF = .175; // = 32767 / maxV      (do not edit from this number)
     public static double DriveP = -0.06; // = 0.1 * F           (raise till real's apex touches Var apex)
     public static double DriveI = 0;// = 0.1 * P           (fine ajustment of P)
-    public static double DriveD = -0.005; // = 0                     (raise to reduce ocolation)
+    public static double DriveD = 0.005; // = 0                     (raise to reduce ocolation)
 
     double DrivePIDCurrentTime = 0;
     double DrivePIDTime = 0;
@@ -57,9 +57,9 @@ public class robotHardware extends LinearOpMode
 
     //PID Turning Variables
 
-    public static double TurnF = -.1; // = 32767 / maxV      (do not edit from this number)
-    public static double TurnP = -.8; // = 0.1 * F           (raise till real's apex touches Var apex)
-    public static double TurnI = 0;// = 0.1 * P           (fine ajustment of P)
+    public static double TurnF = .19; // = 32767 / maxV      (do not edit from this number)
+    public static double TurnP = 0.03; // = 0.1 * F           (raise till real's apex touches Var apex)
+    public static double TurnI = 0; // = 0.1 * P           (fine ajustment of P)
     public static double TurnD = 0; // = 0                     (raise to reduce ocolation)
 
     double TurningPIDCurrentTime = 0;
@@ -318,7 +318,7 @@ public class robotHardware extends LinearOpMode
 
         //add the robots movement this loop to the global location
         //double theta = (dtheta / 2.0);
-        GlobalHeading -= dtheta;
+        GlobalHeading += dtheta;
         GlobalX -= dx * Math.cos(GlobalHeading) - dy * Math.sin(GlobalHeading);
         GlobalY += dx * Math.sin(GlobalHeading) + dy * Math.cos(GlobalHeading);
 
@@ -451,7 +451,7 @@ public class robotHardware extends LinearOpMode
             //math to calculate distances to the target
             double distanceToTarget = Math.hypot(x - GlobalX, y - GlobalY);
             double absoluteAngleToTarget = Math.atan2(x - GlobalX, y - GlobalY);
-            double reletiveAngleToTarget = angleWrapRad(absoluteAngleToTarget - GlobalHeading-Math.toRadians(90));
+            double reletiveAngleToTarget = angleWrapRad(absoluteAngleToTarget - GlobalHeading - Math.toRadians(90));
             double reletiveXToTarget = Math.cos(reletiveAngleToTarget) * distanceToTarget;
             double reletiveYToTarget = Math.sin(reletiveAngleToTarget) * distanceToTarget;
 
@@ -475,7 +475,8 @@ public class robotHardware extends LinearOpMode
             }
 
             //set the motors to the correct powers to move toward the target
-            mecanumDrive(movementXpower, movementYpower, movementTurnPower, voltComp);
+            //mecanumDrive(movementXpower, movementYpower, movementTurnPower, 1);//voltComp);
+            mecanumDrive(0, 0, movementTurnPower, 1);
 
         }
 

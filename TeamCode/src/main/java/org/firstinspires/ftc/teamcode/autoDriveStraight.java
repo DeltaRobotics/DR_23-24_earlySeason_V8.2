@@ -36,31 +36,35 @@ public class autoDriveStraight extends LinearOpMode
         FtcDashboard dashboard = FtcDashboard.getInstance();
         telemetry = dashboard.getTelemetry();
 
-
         robotHardware robot = new robotHardware(hardwareMap);
 
         robot.resetDriveEncoders();
 
-        robot.changeAccuracy(2,2);
-
-        robot.changeSpeed(0.5,0.5);
-
-        telemetry.addData("hello",1.5);
+        //telemetry.addData("hello",1.5);
         telemetry.addData("heading", robot.GlobalHeading);
         telemetry.addData("90", 90);
         telemetry.update();
+
+        //robot.changeAccuracy(1,Math.toRadians(0.5));
 
         waitForStart();
 
         robot.wait(2000, robot.odometers);
 
-        telemetry.addData("hello world",1);
-        telemetry.update();
+        double y = 0;
+        double x = 0;
+        double finalAngle = Math.toRadians(180);
 
-        while(true) {
-            telemetry.addData("hello world",2);
-            robot.goToPosSingle(20, 00, 0, 0);
-            telemetry.addData("hello world",3);
+        while(Math.abs(robot.angleWrapRad(finalAngle - robot.GlobalHeading)) > robot.angleAccuracy) {
+            //robot.goToPosSingle(20, 00, 00, 0);
+            //telemetry.addData("hello world",x);
+
+            robot.goToPosSingle(x, y, finalAngle, 0);
+
+            telemetry.addData("pid 90",robot.odoTurnPID(0,Math.toRadians(90)));
+
+            telemetry.addData("globalY",robot.GlobalY);
+
 
             telemetry.addData("heading", Math.toDegrees(robot.GlobalHeading));
             telemetry.addData("90", 90);
