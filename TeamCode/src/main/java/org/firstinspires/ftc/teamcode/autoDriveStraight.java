@@ -59,7 +59,7 @@ public class autoDriveStraight extends LinearOpMode
 
         while(true) {
             telemetry.addData("hello world",2);
-            robot.goToPosSingle(0, 00, Math.toRadians(90), 0);
+            robot.goToPosSingle(20, 00, 0, 0);
             telemetry.addData("hello world",3);
 
             telemetry.addData("heading", Math.toDegrees(robot.GlobalHeading));
