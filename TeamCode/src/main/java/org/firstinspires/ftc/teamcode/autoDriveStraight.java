@@ -43,9 +43,8 @@ public class autoDriveStraight extends LinearOpMode
         //telemetry.addData("hello",1.5);
         telemetry.addData("heading", robot.GlobalHeading);
         telemetry.addData("90", 90);
+        telemetry.addData("value",0);
         telemetry.update();
-
-        //robot.changeAccuracy(1,Math.toRadians(0.5));
 
         waitForStart();
 
@@ -59,15 +58,18 @@ public class autoDriveStraight extends LinearOpMode
             //robot.goToPosSingle(20, 00, 00, 0);
             //telemetry.addData("hello world",x);
 
-            robot.goToPosSingle(x, y, finalAngle, 0);
+
+            telemetry.addData("value",robot.goToPosSingle(x, y, finalAngle, 0));
 
             telemetry.addData("pid 90",robot.odoTurnPID(0,Math.toRadians(90)));
 
             telemetry.addData("globalY",robot.GlobalY);
 
 
-            telemetry.addData("heading", Math.toDegrees(robot.GlobalHeading));
-            telemetry.addData("90", 90);
+
+
+            telemetry.addData("heading", robot.GlobalHeading);
+            telemetry.addData("90", 2);
             telemetry.update();
         }
 

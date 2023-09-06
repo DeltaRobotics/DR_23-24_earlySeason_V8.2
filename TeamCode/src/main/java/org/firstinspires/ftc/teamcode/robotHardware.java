@@ -435,7 +435,7 @@ public class robotHardware extends LinearOpMode
 
     }
 
-    public void goToPosSingle(double x, double y, double finalAngle, double followAngle)
+    public double goToPosSingle(double x, double y, double finalAngle, double followAngle)
     {
         //bring in the encoder and motor objects
         //odometryRobotHardware robot = new odometryRobotHardware(hardwareMap);
@@ -471,13 +471,16 @@ public class robotHardware extends LinearOpMode
                 movementTurnPower = Range.clip(odoTurnPID(0, reletiveTurnAngle), -turnSpeed, turnSpeed);
             } else {
                 reletiveTurnAngle = angleWrapRad(finalAngle - GlobalHeading);
-                movementTurnPower = Range.clip(odoTurnPID(0, reletiveTurnAngle), -turnSpeed, turnSpeed);
+                //movementTurnPower = Range.clip(odoTurnPID(0, reletiveTurnAngle), -turnSpeed, turnSpeed);
+                movementTurnPower = odoTurnPID(0, reletiveTurnAngle);
             }
 
             //set the motors to the correct powers to move toward the target
             //mecanumDrive(movementXpower, movementYpower, movementTurnPower, 1);//voltComp);
             mecanumDrive(0, 0, movementTurnPower, 1);
 
+
+            return reletiveTurnAngle;
         }
 
     /**
@@ -534,7 +537,7 @@ public class robotHardware extends LinearOpMode
         TurningPIDMotorPower = (TurnP * TurningPIDError)
                 + (TurnI * TurningPIDTotalError)
                 + (TurnD * (TurningPIDError - TurningPIDPreviousError) / time)
-                + (TurnF * (TurningPIDError/Math.abs(TurningPIDError)));
+                + (TurnF * (Math.signum(TurningPIDError)));
         return TurningPIDMotorPower;
     }
 
