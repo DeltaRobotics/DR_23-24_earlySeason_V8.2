@@ -43,7 +43,7 @@ public class robotHardware extends LinearOpMode
     public static double DriveF = .175; // = 32767 / maxV      (do not edit from this number)
     public static double DriveP = -0.06; // = 0.1 * F           (raise till real's apex touches Var apex)
     public static double DriveI = 0;// = 0.1 * P           (fine ajustment of P)
-    public static double DriveD = 0.005; // = 0                     (raise to reduce ocolation)
+    public static double DriveD = 0.0005; // = 0                     (raise to reduce ocolation)
 
     double DrivePIDCurrentTime = 0;
     double DrivePIDTime = 0;
@@ -461,26 +461,32 @@ public class robotHardware extends LinearOpMode
             //calculate the vector powers for the mecanum math
             double movementXpower = (reletiveXToTarget / (Math.abs(reletiveXToTarget) + Math.abs(reletiveYToTarget))) * slowDown;
             double movementYpower = (reletiveYToTarget / (Math.abs(reletiveYToTarget) + Math.abs(reletiveXToTarget))) * slowDown;
+            if (Double.isNaN(movementYpower)){
+                movementYpower = 0;
+            }
+            if (Double.isNaN(movementXpower)){
+                movementXpower = 0;
+            }
 
             //when far away from the target the robot will point at the target to get there faster.
             //at the end of the movement the robot will begin moving toward the desired final angle
             double movementTurnPower;
             double reletiveTurnAngle;
-            if (distanceToTarget > 6) {
+            if (distanceToTarget > 2) {
                 reletiveTurnAngle = angleWrapRad(reletiveAngleToTarget + followAngle);
                 movementTurnPower = Range.clip(odoTurnPID(0, reletiveTurnAngle), -turnSpeed, turnSpeed);
             } else {
                 reletiveTurnAngle = angleWrapRad(finalAngle - GlobalHeading);
-                //movementTurnPower = Range.clip(odoTurnPID(0, reletiveTurnAngle), -turnSpeed, turnSpeed);
-                movementTurnPower = odoTurnPID(0, reletiveTurnAngle);
+                movementTurnPower = Range.clip(odoTurnPID(0, reletiveTurnAngle), -turnSpeed, turnSpeed);
+                //movementTurnPower = odoTurnPID(0, reletiveTurnAngle);
             }
 
             //set the motors to the correct powers to move toward the target
-            //mecanumDrive(movementXpower, movementYpower, movementTurnPower, 1);//voltComp);
-            mecanumDrive(0, 0, movementTurnPower, 1);
+            mecanumDrive(movementXpower, movementYpower, movementTurnPower, 1);//voltComp);
+            //mecanumDrive(0, 0, movementTurnPower, 1);
 
 
-            return reletiveTurnAngle;
+            return distanceToTarget;
         }
 
     /**
