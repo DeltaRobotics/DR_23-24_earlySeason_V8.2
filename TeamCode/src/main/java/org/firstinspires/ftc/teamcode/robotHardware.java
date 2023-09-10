@@ -33,6 +33,7 @@ public class robotHardware extends LinearOpMode
     public DcMotor arm = null;
     public Servo wrist = null;
     public Servo finger = null;
+    public Servo launcher = null;
 
 
     DcMotor[] odometers = new DcMotor[3];
@@ -107,6 +108,7 @@ public class robotHardware extends LinearOpMode
         arm = ahwMap.dcMotor.get("arm");
         wrist = ahwMap.servo.get("wrist");
         finger = ahwMap.servo.get("finger");
+        launcher = ahwMap.servo.get("launcher");
 
         //drive motors and odometry encoders
         motorRF.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -502,7 +504,95 @@ public class robotHardware extends LinearOpMode
 
 
             return movementTurnPower;
+    }
+
+    public void driveToPos(double x, double y, double finalAngle){
+        //bring in the encoder and motor objects
+        //odometryRobotHardware robot = new odometryRobotHardware(hardwareMap);
+
+        //while loop makes the code keep running till the desired location is reached. (within the accuracy constraints)
+
+
+        //update odometry location
+        refresh(odometers);
+
+        double voltComp = (14.0/ControlHub_VoltageSensor.getVoltage()) * (11.0/14.0);
+
+        //math to calculate distances to the target
+        double distanceToTarget = Math.hypot(x - GlobalX, y - GlobalY);
+        double absoluteAngleToTarget = Math.atan2(x - GlobalX, y - GlobalY);
+        double reletiveAngleToTarget = angleWrapRad(absoluteAngleToTarget - GlobalHeading - Math.toRadians(90));
+        double reletiveXToTarget = Math.cos(reletiveAngleToTarget) * distanceToTarget;
+        double reletiveYToTarget = Math.sin(reletiveAngleToTarget) * distanceToTarget;
+
+        //slow down ensures the robot does not over shoot the target
+        double slowDown = Range.clip(odoDrivePID(0,distanceToTarget), 0, moveSpeed);
+
+        //calculate the vector powers for the mecanum math
+        double movementXpower = (reletiveXToTarget / (Math.abs(reletiveXToTarget) + Math.abs(reletiveYToTarget))) * slowDown;
+        double movementYpower = (reletiveYToTarget / (Math.abs(reletiveYToTarget) + Math.abs(reletiveXToTarget))) * slowDown;
+        if (Double.isNaN(movementYpower)){
+            movementYpower = 0;
         }
+        if (Double.isNaN(movementXpower)){
+            movementXpower = 0;
+        }
+
+        //when far away from the target the robot will point at the target to get there faster.
+        //at the end of the movement the robot will begin moving toward the desired final angle
+        double movementTurnPower;
+        double reletiveTurnAngle;
+        reletiveTurnAngle = angleWrapRad(reletiveAngleToTarget);
+        movementTurnPower = Range.clip(odoTurnPID(0, reletiveTurnAngle), -turnSpeed, turnSpeed);
+
+
+        //set the motors to the correct powers to move toward the target
+        mecanumDrive(movementXpower, movementYpower, movementTurnPower, voltComp);
+    }
+
+    public void turnToAngle(double x, double y, double finalAngle){
+        //bring in the encoder and motor objects
+        //odometryRobotHardware robot = new odometryRobotHardware(hardwareMap);
+
+        //while loop makes the code keep running till the desired location is reached. (within the accuracy constraints)
+
+
+        //update odometry location
+        refresh(odometers);
+
+        double voltComp = (14.0/ControlHub_VoltageSensor.getVoltage()) * (11.0/14.0);
+
+        //math to calculate distances to the target
+        double distanceToTarget = Math.hypot(x - GlobalX, y - GlobalY);
+        double absoluteAngleToTarget = Math.atan2(x - GlobalX, y - GlobalY);
+        double reletiveAngleToTarget = angleWrapRad(absoluteAngleToTarget - GlobalHeading - Math.toRadians(90));
+        double reletiveXToTarget = Math.cos(reletiveAngleToTarget) * distanceToTarget;
+        double reletiveYToTarget = Math.sin(reletiveAngleToTarget) * distanceToTarget;
+
+        //slow down ensures the robot does not over shoot the target
+        double slowDown = Range.clip(odoDrivePID(0,distanceToTarget), 0, moveSpeed);
+
+        //calculate the vector powers for the mecanum math
+        double movementXpower = (reletiveXToTarget / (Math.abs(reletiveXToTarget) + Math.abs(reletiveYToTarget))) * slowDown;
+        double movementYpower = (reletiveYToTarget / (Math.abs(reletiveYToTarget) + Math.abs(reletiveXToTarget))) * slowDown;
+        if (Double.isNaN(movementYpower)){
+            movementYpower = 0;
+        }
+        if (Double.isNaN(movementXpower)){
+            movementXpower = 0;
+        }
+
+        //when far away from the target the robot will point at the target to get there faster.
+        //at the end of the movement the robot will begin moving toward the desired final angle
+        double movementTurnPower;
+        double reletiveTurnAngle;
+        reletiveTurnAngle = angleWrapRad(finalAngle - GlobalHeading);
+        movementTurnPower = Range.clip(odoTurnPID(0, reletiveTurnAngle), -turnSpeed, turnSpeed);
+
+
+        //set the motors to the correct powers to move toward the target
+        mecanumDrive(movementXpower, movementYpower, movementTurnPower, voltComp);
+    }
 
     /**
      * this method is the key to using odometry
