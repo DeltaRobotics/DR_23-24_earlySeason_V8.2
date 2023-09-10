@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
@@ -27,6 +28,12 @@ public class robotHardware extends LinearOpMode
     public DcMotor leftEncoder = null;
     public DcMotor rightEncoder = null;
     public DcMotor perpendicularEncoder = null;
+
+    //non-wheels
+    public DcMotor arm = null;
+    public Servo wrist = null;
+    public Servo finger = null;
+
 
     DcMotor[] odometers = new DcMotor[3];
     DcMotor[] drive = new DcMotor[4];
@@ -97,6 +104,10 @@ public class robotHardware extends LinearOpMode
         motorRB = ahwMap.dcMotor.get("motorRB");
         motorLB = ahwMap.dcMotor.get("motorLB");
 
+        arm = ahwMap.dcMotor.get("arm");
+        wrist = ahwMap.servo.get("wrist");
+        finger = ahwMap.servo.get("finger");
+
         //drive motors and odometry encoders
         motorRF.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         motorLF.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -108,6 +119,8 @@ public class robotHardware extends LinearOpMode
         motorRF.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorRB.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
+        arm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
         motorLF.setDirection(DcMotorSimple.Direction.REVERSE);
         motorLB.setDirection(DcMotorSimple.Direction.REVERSE);
 
@@ -115,6 +128,8 @@ public class robotHardware extends LinearOpMode
         motorLF.setPower(0);
         motorRB.setPower(0);
         motorLB.setPower(0);
+
+        arm.setPower(0);
 
         //odometry init (use the motors objects that the odometers are plugged into)
         leftEncoder = motorRB;
