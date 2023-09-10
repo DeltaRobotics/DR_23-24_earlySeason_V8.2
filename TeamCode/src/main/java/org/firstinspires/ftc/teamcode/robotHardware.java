@@ -57,9 +57,9 @@ public class robotHardware extends LinearOpMode
 
     //PID Turning Variables
 
-    public static double TurnF = .19; // = 32767 / maxV      (do not edit from this number)
+    public static double TurnF = .175; // = 32767 / maxV      (do not edit from this number)
     public static double TurnP = 0.5; // = 0.1 * F           (raise till real's apex touches Var apex)
-    public static double TurnI = 0; // = 0.1 * P           (fine ajustment of P)
+    public static double TurnI = 0.05; // = 0.1 * P           (fine ajustment of P)
     public static double TurnD = 0; // = 0                     (raise to reduce ocolation)
 
     double TurningPIDCurrentTime = 0;
@@ -472,7 +472,7 @@ public class robotHardware extends LinearOpMode
             //at the end of the movement the robot will begin moving toward the desired final angle
             double movementTurnPower;
             double reletiveTurnAngle;
-            if (distanceToTarget > 2) {
+            if (distanceToTarget > 6) {
                 reletiveTurnAngle = angleWrapRad(reletiveAngleToTarget + followAngle);
                 movementTurnPower = Range.clip(odoTurnPID(0, reletiveTurnAngle), -turnSpeed, turnSpeed);
             } else {
@@ -486,7 +486,7 @@ public class robotHardware extends LinearOpMode
             //mecanumDrive(0, 0, movementTurnPower, 1);
 
 
-            return distanceToTarget;
+            return movementTurnPower;
         }
 
     /**
