@@ -83,7 +83,7 @@ public class robotHardware extends LinearOpMode
     //PID general Variables
 
     public static double GeneralF = 0.25; // = 32767 / maxV      (do not edit from this number)
-    public static double GeneralP = 0.01; // = 0.1 * F           (raise till real's apex touches Var apex)
+    public static double GeneralP = 0.02; // = 0.1 * F           (raise till real's apex touches Var apex)
     public static double GeneralI = 0;// = 0.1 * P           (fine ajustment of P)
     public static double GeneralD = 0; // = 0                     (raise to reduce ocolation)
 
@@ -123,6 +123,7 @@ public class robotHardware extends LinearOpMode
 
         arm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         arm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        arm.setDirection(DcMotorSimple.Direction.REVERSE);
 
         motorLF.setDirection(DcMotorSimple.Direction.REVERSE);
         motorLB.setDirection(DcMotorSimple.Direction.REVERSE);

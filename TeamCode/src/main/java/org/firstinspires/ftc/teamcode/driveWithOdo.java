@@ -44,10 +44,11 @@ public class driveWithOdo extends LinearOpMode{
                 //collecting
                 armSetPos = 100;
             }
+
             //Runs the arm using the pid
+            robot.arm.setTargetPosition(armSetPos);
             robot.arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robot.arm.setPower(robot.odoPID(armSetPos,robot.arm.getCurrentPosition()));
-            robot.arm.setTargetPosition(armSetPos);
 
             if(gamepad1.right_bumper){
                 //grab
@@ -79,7 +80,8 @@ public class driveWithOdo extends LinearOpMode{
             if(gamepad2.y){
                 robot.launcher.setPosition(0);
             }
-            telemetry.addData("motor Power",robot.odoPID(armSetPos,robot.arm.getCurrentPosition()));
+
+            telemetry.addData("motor Power",robot.arm.getPower());
             telemetry.addData("arm encoder", robot.arm.getCurrentPosition());
             telemetry.addData("servo", robot.launcher.getPosition());
             telemetry.update();
