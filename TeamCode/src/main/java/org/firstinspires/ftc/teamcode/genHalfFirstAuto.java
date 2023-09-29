@@ -31,14 +31,14 @@ import java.util.ArrayList;
 //@Disabled
 public class genHalfFirstAuto extends LinearOpMode
 {
-    private OpenCvCamera camera2;//find webcam statement
+    private OpenCvCamera camera;//find webcam statement
 
-    private static final int CAMERA2_WIDTH  = 640; // width  of wanted camera resolution
-    private static final int CAMERA2_HEIGHT = 360; // height of wanted camera resolution
+    private static final int CAMERA_WIDTH  = 640; // width  of wanted camera resolution
+    private static final int CAMERA_HEIGHT = 360; // height of wanted camera resolution
 
     // Yellow Range                                      Y      Cr     Cb
-    public static Scalar scalarLowerYCrCb = new Scalar(  0.0, 180, 90);
-    public static Scalar scalarUpperYCrCb = new Scalar(255.0, 255.0, 170);
+    public static Scalar scalarLowerYCrCb = new Scalar(  0.0, 120.0, 100.0);
+    public static Scalar scalarUpperYCrCb = new Scalar(255.0, 200.0, 255.0);
 
     double poleOffset = 0;
     double poleOffsetPower = 0;
@@ -54,12 +54,12 @@ public class genHalfFirstAuto extends LinearOpMode
 
         // OpenCV lift webcam
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        camera2 = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 2"), cameraMonitorViewId);
+        camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
         //OpenCV PoleDetectionPipeline
         PoleDetectionPipeline myPipeline;
-        camera2.setPipeline(myPipeline = new PoleDetectionPipeline());
+        camera.setPipeline(myPipeline = new PoleDetectionPipeline());
         // Configuration of PoleDetectionPipeline
-        myPipeline.ConfigurePipeline(0, 0,0,0,  CAMERA2_WIDTH, CAMERA2_HEIGHT);
+        myPipeline.ConfigurePipeline(0, 0,0,0,  CAMERA_WIDTH, CAMERA_HEIGHT);
         myPipeline.ConfigureScalarLower(scalarLowerYCrCb.val[0],scalarLowerYCrCb.val[1],scalarLowerYCrCb.val[2]);
         myPipeline.ConfigureScalarUpper(scalarUpperYCrCb.val[0],scalarUpperYCrCb.val[1],scalarUpperYCrCb.val[2]);
 
@@ -67,12 +67,12 @@ public class genHalfFirstAuto extends LinearOpMode
 
         telemetry.update();
 
-        camera2.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
+        camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
         {
             @Override
             public void onOpened()
             {
-                camera2.startStreaming(CAMERA2_WIDTH, CAMERA2_HEIGHT, OpenCvCameraRotation.UPSIDE_DOWN);
+                camera.startStreaming(CAMERA_WIDTH, CAMERA_HEIGHT, OpenCvCameraRotation.UPSIDE_DOWN);
             }
 
             @Override
@@ -81,14 +81,9 @@ public class genHalfFirstAuto extends LinearOpMode
                 telemetry.addData("camera not started", myPipeline.debug);
             }
         });
-        FtcDashboard.getInstance().startCameraStream(camera2, 10);
+        FtcDashboard.getInstance().startCameraStream(camera, 10);
 
-        waitForStart();
-
-
-
-
-
-
+       waitForStart();
     }
+
 }
