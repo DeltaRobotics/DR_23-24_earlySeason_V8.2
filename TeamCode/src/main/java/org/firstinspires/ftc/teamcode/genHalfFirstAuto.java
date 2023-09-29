@@ -83,7 +83,20 @@ public class genHalfFirstAuto extends LinearOpMode
         });
         FtcDashboard.getInstance().startCameraStream(camera, 10);
 
-       waitForStart();
-    }
+        while(true){
+            if(myPipeline.getRectMidpointX() >= 225 && myPipeline.getRectMidpointX() <= 245){
+                telemetry.addData("location", 2);
+            } else if(myPipeline.getRectMidpointX() >= 380 && myPipeline.getRectMidpointX() <= 400){
+                telemetry.addData("location", 1);
+            } else if(myPipeline.getRectMidpointX() >= 45 && myPipeline.getRectMidpointX() <= 65){
+                telemetry.addData("location", 3);
+            } else{
+                telemetry.addData("location", "no head seen");
+            }
 
+          telemetry.addData("x", myPipeline.getRectMidpointX());
+          telemetry.addData("y", myPipeline.getRectMidpointY());
+          telemetry.update();
+        }
+    }
 }
