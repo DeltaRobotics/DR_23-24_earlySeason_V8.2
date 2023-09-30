@@ -53,6 +53,8 @@ public class PoleDetectionPipeline extends OpenCvPipeline
     private double maxArea = 0;
     private boolean first = false;
 
+    public int minArea = 500;
+
     public void ConfigurePipeline(int borderLeftX, int borderRightX, int borderTopY, int borderBottomY, int CAMERA_WIDTH, int CAMERA_HEIGHT)
     {
         this.borderLeftX = borderLeftX;
@@ -125,7 +127,7 @@ public class PoleDetectionPipeline extends OpenCvPipeline
                 maxRect = new Rect();
             }
             // Draw Rectangles If Area Is At Least 500
-            if (first && maxRect.area() > 500)
+            if (first && maxRect.area() > minArea)
             {
                 Imgproc.rectangle(output, maxRect, new Scalar(0, 255, 0), 2);
             }
@@ -151,4 +153,5 @@ public class PoleDetectionPipeline extends OpenCvPipeline
     public Point getRectMidpointXY(){ return new Point(getRectMidpointX(), getRectMidpointY());}
     public double getAspectRatio(){ return getRectArea()/(CAMERA_HEIGHT*CAMERA_WIDTH); }
     public double getRectArea(){ return maxRect.area(); }
+    public void changeMinArea(int newMin){ minArea = newMin; }
 }
