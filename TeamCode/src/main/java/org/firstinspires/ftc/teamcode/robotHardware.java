@@ -31,6 +31,8 @@ public class robotHardware extends LinearOpMode
 
     //non-wheels
     public Servo launcher = null;
+    public DcMotor slidesL = null;
+    public DcMotor slidesR = null;
 
     DcMotor[] odometers = new DcMotor[3];
     DcMotor[] drive = new DcMotor[4];
@@ -102,6 +104,8 @@ public class robotHardware extends LinearOpMode
         motorLB = ahwMap.dcMotor.get("motorLB");
 
         launcher = ahwMap.servo.get("launcher");
+        slidesR = hardwareMap.dcMotor.get("slidesR");
+        slidesL = hardwareMap.dcMotor.get("slidesL");
 
         //drive motors and odometry encoders
         motorRF.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -114,6 +118,13 @@ public class robotHardware extends LinearOpMode
         motorRF.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorRB.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
+        slidesR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        slidesL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        slidesR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        slidesL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        slidesR.setDirection(DcMotorSimple.Direction.REVERSE);
 
         motorLF.setDirection(DcMotorSimple.Direction.REVERSE);
         motorLB.setDirection(DcMotorSimple.Direction.REVERSE);
